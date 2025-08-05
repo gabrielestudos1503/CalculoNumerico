@@ -6,15 +6,23 @@ public class Main {
         JFrame frame = new JFrame("Método de Bisseção");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 500);
+        frame.setLocationRelativeTo(null);
         frame.setResizable(false);
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
-    
-        JLabel text = new JLabel("Teste");
-        text.setBounds(100, 40, 100, 20);
-        text.setFont(new Font("Arial", Font.BOLD, 16));
-        panel.add(text);
+
+        // Inserir Polinomio
+
+        JLabel polinomioLabel = new JLabel("f(x): ");
+        polinomioLabel.setBounds(50, 40, 100, 20);
+        polinomioLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        polinomioLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        panel.add(polinomioLabel);
+
+        JTextField polinomioTextField = new JTextField();
+        polinomioTextField.setBounds(175, 40, 200, 30);
+        panel.add(polinomioTextField);
 
         frame.add(panel);
         frame.setVisible(true);
