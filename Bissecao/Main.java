@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -64,7 +63,7 @@ public class Main {
 
         String[] formas = polinomio.split("(?=[+\\-])");
 
-
+        
 
         for(String f : formas){
             System.out.println(f);
