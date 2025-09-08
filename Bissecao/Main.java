@@ -1,7 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
+    static List<double[]> testeIntervalos = new ArrayList<>();
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Método de Bisseção");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,23 +32,35 @@ public class Main {
         panel.add(teste);
 
         teste.addActionListener(e -> {
-            // calcularPolinomio(polinomioTextField.getText(), 1);
-            buscarIntervalos(polinomioTextField.getText());
+            // testando intervalos
+            testeIntervalos = buscarIntervalos(polinomioTextField.getText());
+            for (double[] par : testeIntervalos) {
+                System.out.printf("[%.0f, %.0f]%n", par[0], par[1]);
+            }
         });
 
         frame.add(panel);
         frame.setVisible(true);
     }
 
-    public static void buscarIntervalos(String polinomio) {
-        String[] termos;
-        double fx;
-        double anterior = 0.0;
+    public static List<double[]> buscarIntervalos(String polinomio) {
+        List<double[]> intervalos = new ArrayList<>();
 
-        for (int i = -1000; i < 1000; i++) {
-            fx = calcularPolinomio(polinomio, i);
-            
+        int xAnterior = -1000;
+        double anterior = calcularPolinomio(polinomio, (double) xAnterior);
+
+        for (int x = -999; x <= 1000; x++) {
+            double fx = calcularPolinomio(polinomio, (double) x);
+
+            if ((fx > 0 && anterior < 0) || (fx < 0 && anterior > 0)) {
+                intervalos.add(new double[] { xAnterior, x });
+            }
+
+            xAnterior = x;
+            anterior = fx;
         }
+
+        return intervalos;
     }
 
     public static double calcularPolinomio(String polinomio, double x) {
