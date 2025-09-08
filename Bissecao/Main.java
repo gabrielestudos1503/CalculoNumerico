@@ -63,6 +63,7 @@ public class Main {
         frame.add(scrollPane);
 
         teste.addActionListener(e -> {
+            model.setRowCount(0);
             testeIntervalos = buscarIntervalos(polinomioTextField.getText());
             for (double[] par : testeIntervalos) {
                 System.out.printf("[%.0f, %.0f]%n", par[0], par[1]);
