@@ -28,7 +28,8 @@ public class Main {
         panel.add(teste);
 
         teste.addActionListener(e -> {
-            calcularPolinomio(polinomioTextField.getText(), 1);
+            // calcularPolinomio(polinomioTextField.getText(), 1);
+            buscarIntervalos(polinomioTextField.getText());
         });
 
         frame.add(panel);
@@ -36,40 +37,76 @@ public class Main {
     }
 
     public static void buscarIntervalos(String polinomio) {
-        for (int i = -1000; i < 1000; i++) {
+        String[] termos;
+        double fx;
+        double anterior = 0.0;
 
+        for (int i = -1000; i < 1000; i++) {
+            fx = calcularPolinomio(polinomio, i);
+            
         }
     }
 
-    public static void calcularPolinomio(String polinomio, int variavel) {
+    public static double calcularPolinomio(String polinomio, double x) {
         // Exemplo de polinomio: x^3-9*x+3
 
-        // Validação e nom
-        polinomio = polinomio.replace(" ", "");
-        polinomio = polinomio.toLowerCase();
-        polinomio = polinomio.replace("*", "");
-
-        if (polinomio.contains("+-") || polinomio.contains("-+")) {
-            polinomio = polinomio.replace("+-", "-");
-            polinomio = polinomio.replace("-+", "-");
-        }
-        if (polinomio.contains("++") || polinomio.contains("--")) {
-            polinomio = polinomio.replace("++", "+");
-            polinomio = polinomio.replace("--", "+");
-        }
-
+        // Validação
+        polinomio = polinomio.replace(" ", "").toLowerCase().replace("*", "");
+        polinomio = polinomio.replace("+-", "-").replace("-+", "-").replace("++", "+").replace("--", "+");
         polinomio = polinomio.replaceAll("([+\\-])x(?=(?:\\^|[+\\-]|$))", "$11x");
         polinomio = polinomio.replaceAll("^x(?=(?:\\^|[+\\-]|$))", "+1x");
-
-        String[] formas = polinomio.split("(?=[+\\-])");
-
-        
-
-        for(String f : formas){
-            System.out.println(f);
+        if (!polinomio.isEmpty() && polinomio.charAt(0) != '+' && polinomio.charAt(0) != '-') {
+            polinomio = "+" + polinomio;
         }
-        System.out.println(polinomio);
+        String[] termos = polinomio.split("(?=[+\\-])");
 
-        // 1^3-9*1+3
+        double total = 0.0;
+
+        for (String termo : termos) {
+            if (termo.isEmpty()) {
+                continue;
+            }
+
+            // Vendo se é negativo ou positivo
+            int sinal = 1;
+            if (termo.charAt(0) == '+')
+                termo = termo.substring(1);
+            else if (termo.charAt(0) == '-') {
+                sinal = -1;
+                termo = termo.substring(1);
+            }
+            if (termo.isEmpty()) {
+                continue;
+            }
+
+            // tratando o x
+            if (termo.contains("x")) {
+                int indexX = termo.indexOf('x');
+                String coeficienteString = termo.substring(0, indexX);
+                double coeficiente = coeficienteString.isEmpty() ? 1.0 : Double.parseDouble(coeficienteString);
+
+                int expoente = 1;
+                int indexElevado = termo.indexOf('^');
+                if (indexElevado != -1) {
+                    String expoStr = termo.substring(indexElevado + 1);
+                    expoente = Integer.parseInt(expoStr);
+                }
+
+                // tratando elevado
+                double elevado = 1;
+                for (int i = 0; i < expoente; i++) {
+                    elevado *= x;
+                }
+
+                // Fazendo calculo
+                total += sinal * coeficiente * elevado;
+            } else {
+                // caso seja um numero sozinho sem nada
+                double termoSolo = Double.parseDouble(termo);
+                total += sinal * termoSolo;
+            }
+        }
+        return total;
+        // // 1^3-9*1+3
     }
 }
