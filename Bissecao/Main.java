@@ -161,6 +161,7 @@ public class Main {
     }
 
     public static List<double[]> buscarIntervalos(String polinomio) {
+        // x^5-3*x^4-3*x^3+11*x^2+4*x-12
         List<double[]> intervalos = new ArrayList<>();
 
         int xAnterior = -1000;
